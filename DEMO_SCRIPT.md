@@ -1,43 +1,54 @@
-# SignalFlow — accurate 3-minute demo script
+# SignalFlow — Global AI Hackathon demo script
 
-**Before recording:** This is a general product walkthrough, not a claim of fit to an unreleased Global AI challenge. After the official prompt is published, name the selected challenge and show the specific adaptation. Use only fictional sample values.
+**Selected challenge:** Innovative Solution for AI Agents & Intelligent Systems.
 
-## 0:00–0:20 — Frame the concept
+**Important:** The actual tool-using model path is local-only. For a live agent demonstration, start the Node server with `SIGNALFLOW_ENABLE_LLM=true` and an approved model key, then verify the workspace badge says **LOCAL MODEL MODE ENABLED** and the run returns an actual tool trace. The badge confirms configuration, not provider connectivity. Never put the key on screen or in a recorded terminal. The public GitHub Pages site is a separate deterministic demo. Use only the built-in fictional cases.
 
-“SignalFlow is a prototype for organizing synthetic AML alert evidence and preparing a human-reviewed next step. The exact Global AI challenge fit is pending the official prompt. This public demo uses fictional data and does not connect to a bank or AML source system.”
+## 0:00–0:25 — Frame the challenge and honest project history
 
-Point out the synthetic-data label and illustrative metrics. Do not present the values as production results.
+“SignalFlow is our AML-focused answer to the Global AI Hackathon’s broad AI Agents and Intelligent Systems challenge. It demonstrates a constrained agent that can gather relevant synthetic evidence through a small set of tools, show the work it did, and prepare a human-reviewed next step. The earlier SignalFlow UI originated in the Azentio.ai Build Labs project; this Global version adds the tool-using agent after this challenge’s prompts opened. We have disclosed that history and will follow the organizer’s guidance on eligibility.”
 
-## 0:20–0:50 — Inspect a sample case
+Point out that every record in the demo is fictional. Do not describe the event-specific agent work as the origin of the whole project.
 
-Open `ALT-24081`: “This fictional case shows a rapid-movement trigger, a synthetic velocity pattern, a new-beneficiary cluster, and a cross-border corridor. Its 79/100 score is a prioritization example, not evidence of misconduct.”
+## 0:25–0:55 — Open the case and explain the boundary
 
-## 0:50–1:30 — Run the investigation
+Open `ALT-24081`. Say: “The model does not receive user-entered data or a live bank record. The local server only accepts a fixed synthetic case ID. A score is a prioritization example, not evidence of misconduct.”
 
-Click **Run explainable investigation**. Explain: “The four visible stages make the sequence understandable; they are not separate agents. On the public static page, deterministic rules generate the recommendation. The optional local server can make one structured model call on a fixed built-in sample if an approved key is configured.”
+Point to the mode badge. It should read **LOCAL MODEL MODE ENABLED**. Then run the built-in case and confirm that a real tool trace appears before claiming the model is active. If the result is deterministic fallback, explain the displayed reason and do not represent fallback behavior as AI.
 
-Emphasize that the recommendation is a review prompt and the human analyst owns the decision.
+## 0:55–1:50 — Show the actual agent trace
 
-## 1:30–1:55 — Record a human action
+Click **Run explainable investigation**. Wait for the recommendation. Point out the actual trace from the local server, for example:
 
-Choose **Escalate case** or **Mark reviewed**, then show **Audit trail**. Explain: “This changes only local demo state and adds a temporary browser-session event. It does not update a case system or create a durable audit record.”
+1. Read synthetic case signals.
+2. Check missing context.
+3. Retrieve the sample review checklist.
+4. The model returns a constrained draft recommendation.
 
-## 1:55–2:40 — Demonstrate data input and updates
+Say: “The model chooses among four local functions; the server validates every call and allows no more than four model turns or six tool calls. The model must inspect evidence, retrieve the checklist, and use at least one other distinct tool before it can return an answer. These are real tool calls returned by the configured local agent—not a pre-rendered multi-agent animation. The functions read fixed fictional data; they cannot search the web or write to a case system.”
 
-Open **Demo data**. Add an alias such as `Sample Merchant 07`, a two-letter jurisdiction, a listed synthetic trigger, a whole-number score, a sample amount, and a three-letter currency. Save it and show the new queue row, updated case count, and updated risk insights. Edit the score so its risk band changes; reload to show the browser-only sample persists. Explain that custom entries never leave the browser and are not sent to the model endpoint. Remove the test entry and use **Restore initial sample** before handing the demo to another reviewer.
+Show the evidence beside the recommendation. Say: “The recommendation is a draft. It cannot disposition or close the case.”
 
-## 2:40–3:00 — Close honestly
+## 1:50–2:15 — Demonstrate the human gate
 
-“The repo includes the public static demo, browser-only synthetic data management, an optional local model endpoint, and automated HTTP/security tests. The prototype’s prior-work history is disclosed. We will confirm eligibility with organizers and make a substantive adaptation to the selected Global challenge before final submission.”
+Choose **Escalate case** or **Mark reviewed**. Show the session event. Explain: “That action changes only this browser demo state. It does not update an AML platform or create a durable audit record. The analyst—not the model—owns the decision.”
+
+## 2:15–2:40 — Show editable synthetic inputs
+
+Open **Demo data**. Add a fictional alias such as `Sample Merchant 07`. Show that the queue count and risk insights update and that the entry remains browser-local. Say: “This record is not sent to the agent. Only fixed built-in examples can reach the local tools.” Restore the initial sample before handing the browser to a reviewer.
+
+## 2:40–3:00 — Close and separate modes
+
+“The repository contains the local bounded agent, a deterministic fallback, browser-local sample data, and mock-provider tests. The public website is static and deterministic. The AI-enabled run requires a locally configured compatible model. SignalFlow is a prototype, not an operational AML system, and we do not claim measured time savings or a unique AML workflow.”
 
 ## Questions to anticipate
 
-**Is the public demo using an LLM?** No. GitHub Pages uses deterministic synthetic rules. The repository’s optional loopback-only Node server can make one OpenAI-compatible model call on a fixed built-in case when an operator supplies a key.
+**Is the public URL using a model?** No. The GitHub Pages build is static and deterministic. The tool-using model is available only from the loopback Node server when the operator explicitly enables it with an approved key.
 
-**Are the four steps separate agents?** No. They are presentation stages. The optional local model path makes one final structured-output call.
+**What makes it an agent?** In local model mode the LLM selects from a fixed set of local functions, can request multiple tool calls over bounded turns, receives the synthetic tool results, and then returns a validated draft. The interface displays actual server-returned tool calls. It is one constrained tool-using agent, not a set of agents.
 
-**Are the cases real?** No. Built-in examples and user-entered sample aliases, amounts, scores, and triggers are fictional. Custom entries persist only in browser localStorage and are not sent to a model.
+**Can it make or record a financial-crime decision?** No. The model has no disposition or external-system write tool. The analyst controls the demo escalate/review action; it only changes browser-session state.
 
-**Does a recommendation take action?** No. The analyst’s disposition changes only demo state. There is no connection to a bank, account, regulator, or case system.
+**Are custom examples sent to the model?** No. Custom entries stay in browser localStorage. The endpoint accepts only one of five server-owned fictional case IDs.
 
-**Does this already satisfy the Global challenge?** Do not claim that until the prompt is published, selected, and addressed by a visible, substantive adaptation.
+**Was the project built from scratch for this Global prompt?** No. The prior SignalFlow UI originated for the separate Azentio.ai Build Labs project and was first publicly committed on 13 October 2026. This Global challenge adaptation adds the bounded tool-using agent after the prompts opened. That history is disclosed; the team is asking the organizer to clarify how the rule applies.

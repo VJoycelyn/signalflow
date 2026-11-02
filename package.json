@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "SignalFlow: a synthetic-data AML investigation copilot demo with an optional local model endpoint.",
+  "description": "SignalFlow: a synthetic-data AML investigation prototype with a bounded tool-using local AI agent and deterministic public demo.",
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",

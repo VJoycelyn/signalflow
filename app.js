@@ -179,19 +179,46 @@ function createDemoId() {
   return id;
 }
 
-const STEP_LABELS = [
-  'Context stage · customer & peer profile',
-  'Pattern stage · transaction graph',
-  'Policy stage · rule & jurisdiction check',
-  'Decision stage · recommendation + rationale',
-];
+const ALLOWED_AGENT_TOOLS = new Set([
+  'read_case_signals',
+  'compare_demo_baseline',
+  'check_missing_context',
+  'get_review_checklist',
+]);
+const AGENT_TOOL_LABELS = {
+  read_case_signals: 'Read synthetic case signals',
+  compare_demo_baseline: 'Compare illustrative baseline',
+  check_missing_context: 'Check missing context',
+  get_review_checklist: 'Retrieve sample review checklist',
+};
 const ALLOWED_RECOMMENDATIONS = new Set([
   'Escalate for enhanced due diligence',
-  'Close as low-confidence activity',
   'Request supporting context before disposition',
+  'Continue standard analyst review',
 ]);
+const ALLOWED_FALLBACK_REASONS = new Set([
+  'model_not_enabled', 'provider_unavailable', 'tool_call_limit', 'tool_request_rejected',
+  'required_tools_missing', 'invalid_final_response', 'provider_or_protocol_error', 'agent_turn_limit',
+]);
+const FALLBACK_REASON_COPY = {
+  model_not_enabled: 'No model is enabled; deterministic rules supplied the result.',
+  provider_unavailable: 'The configured provider did not return a usable response; deterministic rules supplied the result.',
+  tool_call_limit: 'The agent exceeded its tool-call limit; deterministic rules supplied the result.',
+  tool_request_rejected: 'A requested tool call failed validation; deterministic rules supplied the result.',
+  required_tools_missing: 'The agent did not use the required evidence tools; deterministic rules supplied the result.',
+  invalid_final_response: 'The agent draft did not pass output validation; deterministic rules supplied the result.',
+  provider_or_protocol_error: 'The provider or tool protocol failed; deterministic rules supplied the result.',
+  agent_turn_limit: 'The agent exceeded its turn limit; deterministic rules supplied the result.',
+};
+const RUNTIME_COPY = {
+  checking: { label: 'CHECKING RUNTIME', description: 'Checking whether this page has a local agent server. All records are fictional.' },
+  staticDemo: { label: 'PUBLIC STATIC · RULES ONLY', description: 'GitHub Pages is a deterministic demo and makes no model call. Run the local Node server to use the bounded tool agent. Never enter real customer data.' },
+  localFallback: { label: 'LOCAL RULES · NO MODEL', description: 'The local server is using deterministic rules. Explicitly enable the local model mode to run the tool-using agent. Human review remains required.' },
+  localAgent: { label: 'LOCAL MODEL MODE ENABLED', description: 'A model key is configured; provider connectivity is checked only when a case is run. The model can use four allowlisted tools over five fixed synthetic cases. Editable browser entries stay local and use deterministic rules.' },
+};
 
 let selectedCase = CASES[0];
+let runtimeMode = 'checking';
 let lastFocusedElement = null;
 let lastFocusedCaseId = null;
 let riskFilter = 'all';
@@ -265,10 +292,11 @@ function investigationMarkup(item) {
   const result = investigations.get(item.id);
   if (!result) return '';
   const terminal = isTerminal(item.status);
+  const engineLabel = result.engine === 'model-agent' ? 'TOOL-USING AI AGENT · DRAFT' : 'DETERMINISTIC DEMO · NO AI CALL';
   const actionMarkup = terminal
     ? `<p class="disposition-note">Human disposition in this demo session: <strong>${escapeHTML(item.status)}</strong>. No source-system case was changed.</p>`
     : '<div class="next-actions"><button class="action-button primary" data-action="escalate">Escalate case</button><button class="action-button" data-action="resolve">Mark reviewed</button></div>';
-  return `<div class="analysis-result"><div class="recommendation"><span class="rec-icon" aria-hidden="true">✦</span><div><span class="engine-badge">${result.engine === 'model' ? 'MODEL-ASSISTED DRAFT' : 'DETERMINISTIC DEMO'}</span><b>${escapeHTML(result.recommendation)}</b><p>${escapeHTML(result.rationale)}</p><small>Suggested next step only · analyst decision required</small></div></div>${actionMarkup}</div>`;
+  return `<div class="analysis-result"><div class="recommendation"><span class="rec-icon" aria-hidden="true">✦</span><div><span class="engine-badge">${engineLabel}</span><b>${escapeHTML(result.recommendation)}</b><p>${escapeHTML(result.rationale)}</p><small>Draft suggestion only · analyst decision required</small></div></div>${actionMarkup}</div>`;
 }
 
 function renderDrawer() {
@@ -278,7 +306,15 @@ function renderDrawer() {
   const run = activeRuns.get(c.id);
   const result = investigations.get(c.id);
   const terminal = isTerminal(c.status);
+  const runtime = RUNTIME_COPY[runtimeMode] || RUNTIME_COPY.checking;
+  const runtimeDescription = c.isUserInput && runtimeMode === 'localAgent'
+    ? 'This user-entered synthetic record stays in this browser and is never sent to the agent; only the five built-in fictional cases can use local tools.'
+    : runtime.description;
   const buttonText = run ? 'Investigation running…' : result ? 'Investigation complete' : terminal ? `Already ${c.status.toLowerCase()}` : 'Run explainable investigation →';
+  const fallbackNote = FALLBACK_REASON_COPY[result?.fallbackReason] || 'No model or agent tools ran for this recommendation.';
+  const agentTraceMarkup = result?.engine === 'model-agent'
+    ? `<div class="agent-trace" aria-label="Actual local agent tool calls"><b class="trace-heading">LOCAL AGENT TOOL TRACE · ${result.toolTrace.length} CALLS</b>${result.toolTrace.map((entry) => `<div class="trace-item"><span class="trace-tool">${escapeHTML(entry.label)}</span><p>${escapeHTML(entry.summary)}</p></div>`).join('')}</div>`
+    : result ? `<p class="demo-disclosure fallback-note">DETERMINISTIC DEMO RESULT · ${escapeHTML(fallbackNote)}</p>` : '';
   $('#drawer-content').innerHTML = `<div class="drawer-eyebrow">CASE WORKSPACE · ${escapeHTML(c.id)}</div>
     <h2 id="drawer-title" class="drawer-title">${escapeHTML(c.customer)}</h2>
     <p class="drawer-subtitle">${escapeHTML(c.segment)} · ${escapeHTML(c.country)} · ${escapeHTML(c.amount)}</p>
@@ -286,15 +322,11 @@ function renderDrawer() {
     <div class="case-score"><div class="score-ring" style="--score:${c.score}%;--score-color:${scoreColor}">${c.score}</div><div><b>Composite risk score</b><p>Prioritization signal: <strong style="color:${scoreColor}">${c.risk === 'high' ? 'high' : c.risk === 'medium' ? 'moderate' : 'low'}</strong>. It is not a finding of misconduct. Human review is required.</p></div></div>
     <div class="drawer-section"><h4>WHY THIS CASE?</h4><div class="evidence-list">${evidenceMarkup(c)}</div></div>
     <div class="drawer-section"><h4>EVENT TRACE</h4><div class="timeline">${timelineMarkup(c)}</div></div>
-    <div class="investigation-box"><div class="investigation-head"><b>Investigation copilot</b><span class="ai-badge">SYNTHETIC CASE · v0.2</span></div>
-      <p class="demo-disclosure">The public GitHub Pages demo uses deterministic demo rules. The optional model-backed endpoint is available only when you run the repository server with a configured key. Never enter real customer data.</p>
+    <div class="investigation-box"><div class="investigation-head"><b>Investigation agent</b><span id="runtime-mode" class="ai-badge">${escapeHTML(runtime.label)}</span></div>
+      <p id="runtime-disclosure" class="demo-disclosure">${escapeHTML(runtimeDescription)}</p>
       <button id="run-investigation" class="run-button" ${run || result || terminal ? 'disabled' : ''}>${buttonText}</button>
-      <div class="agent-steps">${STEP_LABELS.map((label, index) => {
-        let stateClass = '';
-        if (result || (run && index < run.current)) stateClass = 'done';
-        else if (run && index === run.current) stateClass = 'current';
-        return `<div class="agent-step ${stateClass}" data-step="${index}"><span class="step-dot"></span>${escapeHTML(label)}</div>`;
-      }).join('')}</div>
+      ${run ? '<p class="agent-run-state" role="status" aria-live="polite">Running a bounded investigation on this fictional case…</p>' : ''}
+      ${agentTraceMarkup}
       ${investigationMarkup(c)}
     </div>
     <div class="copilot"><label class="copilot-label" for="copilot-input">CASE-GROUNDED DEMO Q&amp;A</label><div class="copilot-row"><input id="copilot-input" aria-describedby="copilot-disclosure" placeholder="Why was this alert prioritized?" /><button id="copilot-submit" type="button">Ask</button></div><p id="copilot-disclosure" class="demo-disclosure">Answers use a deterministic pattern against this fictional case; they are not live AI advice.</p><div id="copilot-answer" class="copilot-answer" role="status" aria-live="polite"></div></div>`;
@@ -489,11 +521,11 @@ function localInvestigation(item) {
   const low = item.score < 50;
   return {
     id: item.id,
-    recommendation: high ? 'Escalate for enhanced due diligence' : low ? 'Close as low-confidence activity' : 'Request supporting context before disposition',
+    recommendation: high ? 'Escalate for enhanced due diligence' : low ? 'Continue standard analyst review' : 'Request supporting context before disposition',
     rationale: high
       ? `The strongest signal is ${item.evidence[0]?.title?.toLowerCase() ?? 'the primary trigger'}. The demo links ${item.tags.length} indicators; keep the case in the human review lane.`
       : low
-        ? 'The activity is unusual but aligns with the fictional customer peer profile. Preserve the evidence and have an analyst document any review decision.'
+        ? 'This fictional sample has a lower illustrative score, but an analyst still needs to verify context and make the decision.'
         : 'The activity is above the synthetic baseline, but the available demo context is incomplete. Request supporting context before disposition.',
     confidence: high ? 0.91 : low ? 0.86 : 0.74,
     engine: 'demo-rules',
@@ -505,13 +537,46 @@ function validateInvestigation(candidate, caseId) {
   if (candidate.id !== caseId || !ALLOWED_RECOMMENDATIONS.has(candidate.recommendation)) return null;
   if (typeof candidate.rationale !== 'string' || candidate.rationale.length < 1 || candidate.rationale.length > 600) return null;
   if (candidate.confidence !== undefined && (!Number.isFinite(candidate.confidence) || candidate.confidence < 0 || candidate.confidence > 1)) return null;
+  if (candidate.engine !== 'model-agent' && candidate.engine !== 'demo-rules') return null;
+  if (candidate.fallbackReason !== undefined && !ALLOWED_FALLBACK_REASONS.has(candidate.fallbackReason)) return null;
+  const rawTrace = Array.isArray(candidate.toolTrace) ? candidate.toolTrace.slice(0, 6) : [];
+  const toolTrace = rawTrace.map((entry) => {
+    if (!entry || !ALLOWED_AGENT_TOOLS.has(entry.tool) || typeof entry.summary !== 'string' || entry.summary.length > 220) return null;
+    return { tool: entry.tool, label: AGENT_TOOL_LABELS[entry.tool], summary: entry.summary };
+  }).filter(Boolean);
+  if (candidate.engine === 'model-agent' && (toolTrace.length !== rawTrace.length || toolTrace.length < 3
+    || !toolTrace.some((entry) => entry.tool === 'read_case_signals')
+    || !toolTrace.some((entry) => entry.tool === 'get_review_checklist'))) return null;
   return {
     id: caseId,
     recommendation: candidate.recommendation,
     rationale: candidate.rationale,
     confidence: candidate.confidence ?? null,
-    engine: candidate.engine === 'model' ? 'model' : 'demo-rules',
+    engine: candidate.engine,
+    toolTrace,
+    fallbackReason: candidate.fallbackReason,
   };
+}
+
+async function detectRuntimeMode() {
+  try {
+    const response = await fetch(new URL('api/status', document.baseURI), {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(2500),
+    });
+    if (!response.ok) throw new Error('No local status endpoint');
+    const status = await response.json();
+    runtimeMode = status.mode === 'local-tool-agent-enabled' && status.modelEnabled ? 'localAgent' : 'localFallback';
+  } catch (_) {
+    runtimeMode = 'staticDemo';
+  }
+  const badge = $('#runtime-mode');
+  const disclosure = $('#runtime-disclosure');
+  const runtime = RUNTIME_COPY[runtimeMode];
+  if (badge) badge.textContent = runtime.label;
+  if (disclosure) disclosure.textContent = selectedCase?.isUserInput && runtimeMode === 'localAgent'
+    ? 'This user-entered synthetic record stays in this browser and is never sent to the agent; only the five built-in fictional cases can use local tools.'
+    : runtime.description;
 }
 
 function delay(milliseconds) {
@@ -525,20 +590,11 @@ async function runInvestigation() {
 
   const token = `${caseId}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
   const previousStatus = caseAtStart.status;
-  activeRuns.set(caseId, { token, current: -1 });
+  activeRuns.set(caseId, { token });
   selectedCase.status = 'Investigating';
-  recordAudit(caseId, 'Investigation started', 'Four bounded demo stages started; no source case changed');
+  recordAudit(caseId, 'Investigation started', 'Synthetic-only investigation started; no source case changed');
   renderDrawer();
   renderQueue();
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  for (let index = 0; index < STEP_LABELS.length; index += 1) {
-    const active = activeRuns.get(caseId);
-    if (!active || active.token !== token) return;
-    active.current = index;
-    if (selectedCase.id === caseId && $('#case-drawer').classList.contains('open')) renderDrawer();
-    if (!reducedMotion) await delay(430);
-  }
 
   let result = null;
   if (!caseAtStart.isUserInput) {
@@ -547,7 +603,7 @@ async function runInvestigation() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ case: { id: caseId } }),
-        signal: AbortSignal.timeout(10000),
+        signal: AbortSignal.timeout(60000),
       });
       if (response.ok) result = validateInvestigation(await response.json(), caseId);
     } catch (_) {
@@ -562,10 +618,12 @@ async function runInvestigation() {
   investigations.set(caseId, result);
   const originalCase = CASES.find((item) => item.id === caseId);
   if (originalCase?.status === 'Investigating') originalCase.status = previousStatus === 'Investigating' ? 'Needs review' : previousStatus;
-  recordAudit(caseId, 'Investigation completed', result.engine === 'model' ? 'Validated model-assisted draft returned' : 'Deterministic synthetic fallback returned');
+  recordAudit(caseId, 'Investigation completed', result.engine === 'model-agent'
+    ? `Validated tool-using agent draft returned after ${result.toolTrace.length} local synthetic tool calls`
+    : 'Deterministic synthetic fallback returned; no model or agent tools ran');
   renderQueue();
   if (selectedCase.id === caseId && $('#case-drawer').classList.contains('open')) renderDrawer();
-  showToast(`${caseId} · ${result.engine === 'model' ? 'model-assisted draft' : 'demo rules'} · human review required`);
+  showToast(`${caseId} · ${result.engine === 'model-agent' ? 'tool-using agent draft' : 'demo rules'} · human review required`);
 }
 
 function askCopilot() {
@@ -647,6 +705,7 @@ function trapDialogFocus(event) {
 document.addEventListener('DOMContentLoaded', () => {
   renderQueue();
   renderDemoData();
+  detectRuntimeMode();
   $('#demo-case-form')?.addEventListener('submit', saveDemoCase);
   document.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target : null;

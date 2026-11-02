@@ -127,3 +127,14 @@ button:disabled{cursor:not-allowed;opacity:.55}
 .danger-button{color:var(--red);border-color:rgba(255,124,134,.24)}
 @media(max-width:1000px){.data-layout{grid-template-columns:1fr}}
 @media(max-width:600px){.data-fields{grid-template-columns:1fr}.data-field-full{grid-column:auto}.data-form-actions{flex-wrap:wrap}.data-record{align-items:flex-start;flex-direction:column}.data-record-actions{align-self:flex-end}.data-records-header{align-items:flex-start;flex-direction:column}.data-records-header .secondary-button{align-self:flex-end}.nav-stack{grid-template-columns:repeat(5,minmax(0,1fr))}.nav-item span:not(.nav-icon){font-size:7px}}
+
+
+/* Hackathon AI-agent mode: show only actual server-returned, allowlisted tool calls. */
+.agent-run-state{margin-top:12px;padding:10px;border:1px solid rgba(109,230,224,.2);border-radius:7px;color:var(--cyan);font:9px var(--mono);line-height:1.5}
+.agent-trace{display:grid;gap:8px;margin-top:13px;padding:12px;border:1px solid rgba(109,230,224,.2);border-radius:8px;background:rgba(109,230,224,.035)}
+.trace-heading{color:var(--cyan);font:9px var(--mono);letter-spacing:.08em}
+.trace-item{padding:8px 9px;border-left:2px solid rgba(109,230,224,.45);background:rgba(16,33,55,.55);border-radius:0 6px 6px 0}
+.trace-tool{display:block;color:var(--text);font-size:10px;font-weight:700}
+.trace-item p{margin-top:4px;color:var(--muted);font-size:9px;line-height:1.5;overflow-wrap:anywhere}
+.fallback-note{margin:10px 0 0;padding:9px;border:1px solid rgba(244,190,105,.2);border-radius:7px;background:rgba(244,190,105,.04)}
+@media(max-width:600px){.agent-trace{padding:10px}.trace-item{padding:8px}}

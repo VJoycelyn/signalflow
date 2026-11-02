@@ -1,44 +1,66 @@
-# Global AI Hackathon — Project Readiness Review
+# Global AI Hackathon — SignalFlow Readiness
 
-**Review date:** 2 November 2026
-**Project:** SignalFlow — AML investigation copilot concept
-**Target event:** Geek Room Global AI Hackathon on HackCulture
+- **Review date:** 2 November 2026
+- **Selected challenge:** Innovative Solution for AI Agents & Intelligent Systems
+- **Source:** https://github.com/VJoycelyn/signalflow
+- **Public demo:** https://vjoycelyn.github.io/signalflow/
 
-## Current readiness
+## Current status
 
-The project can be checked against the Global AI Hackathon's general requirements, but exact challenge fit is **not yet verified**: HackCulture now presents problem-statement options, and the exact option selected for this project is not recorded here. The existing prototype's separate-event origin is disclosed; obtain organizer confirmation on eligibility and make a substantive prompt-specific adaptation before final submission. [1] [2]
+SignalFlow now has a substantive, challenge-specific agent implementation in its local Node runtime. A model chooses and calls allowlisted functions over fixed synthetic cases, and the UI can show the real returned tool trace. The public GitHub Pages deployment is static and deterministic; it has no model endpoint. This distinction is disclosed in the app and the submission documents.
 
-## General submission requirements
+The project is not ready for final submission until the organizer clarifies the disclosed prior-work history and the team verifies its own rules/registration actions. The current demo video predates the tool-agent feature and does not demonstrate it.
 
-The Global AI page calls for a working project/demo, source code or repository, project description, explanation of the problem, technologies and tools used, explanation of AI use, and a demo video if required. The repo has a working public prototype, editable synthetic data, source, README, this submission draft, and a demo script. Its live GitHub Pages build uses deterministic synthetic rules; the repository's optional Node server can make a model-backed request only when run locally with an operator-supplied key. The public site itself does not have a deployed model backend. The project documentation now states that distinction and names Manus AI as a coding assistant, HTML/CSS/JavaScript, Node.js, an optional OpenAI-compatible model, and the Google Fonts used by the page. [1]
+## Rule-by-rule check
 
-The user-provided HackCulture dashboard screenshot showed the project title and GitHub URL as required form fields. It showed no required asterisk beside the demo-video link or PPT upload. The official event rules say a video is required only if requested. Check the actual dashboard immediately before submission in case its form configuration changes.
+### Build during the hackathon
 
-## Compliance checklist
+**PARTIAL — organizer clarification recommended.** HackCulture's page lists the overall event period as 9 October–29 November 2026 and the challenge/prototype window as 1–15 November. The first public SignalFlow source commit is dated 13 October, within the overall event dates but before prompt release. Project materials disclose that the underlying prototype originated for the separate Azentio.ai Build Labs event. The selected prompt-specific tool-agent work was added after the prompts opened. This history is not being relabelled. Ask the organizer in the required Discord whether reuse of that core plus the new adaptation meets the rule that the core project should be substantially developed during the event.
 
-**Working project/demo — prepared.** The public website is available at https://vjoycelyn.github.io/signalflow/. It uses synthetic cases. The browser-only Demo Data view supports validated add/edit/remove/reset, persists custom examples in localStorage, and recalculates queue and insight views. User inputs are never sent to the optional model endpoint. A browser smoke test verified create/edit/remove/reset, persistence across reload, invalid-alias rejection, local-only custom-case investigation, and no horizontal overflow at 375px and 768px. The Node fallback and optional model path have automated HTTP tests. It is a prototype, not a production AML deployment.
+### Original work and third-party terms
 
-**Source repository — prepared.** For reviewers, use the subdirectory link https://github.com/VJoycelyn/signalflow so they land directly on the SignalFlow README and source rather than the unrelated repository-root project.
+**PARTIAL.** The six-vendor review found common AML alert-investigation functionality but no evidence of code copying; it was not a comprehensive plagiarism or provenance scan and cannot certify legal originality. `THIRD_PARTY_NOTICES.md` identifies Manrope and DM Mono and their SIL Open Font License 1.1 references. There are no third-party npm runtime dependencies. The repository has no project-level `LICENSE` for SignalFlow source; the owner should choose one only if they intend to grant reuse rights. Maintain the Azentio-origin and AI-assistance disclosures.
 
-**Project and problem description — prepared, exact challenge fit pending.** The draft explains the AML investigation problem and the proposed product. Replace the generic problem framing with the exact Global AI statement and demonstrate a meaningful adaptation after the official challenge is released.
+### AI use and responsible development
 
-**Technology and AI disclosure — prepared.** The draft distinguishes the deterministic public static demo from the optional local model endpoint and states that the four visible stages are workflow presentation, not independent agents. Team members should add any AI tools or models they personally used but that are not already listed.
+**IMPLEMENTED, WITH DEMO LIMITATION.** The local model agent can use four fixed functions: read synthetic case signals, compare an illustrative baseline, check missing context, and retrieve a sample review checklist. The orchestrator allows at most four model turns and six calls. It requires the evidence and checklist tools plus at least one other distinct tool and validates the final recommendation. It has no search or case-write tool, and the analyst retains the decision.
 
-**Video or slide deck — check form.** The supplied dashboard screenshot did not mark these fields as required. A live demo website is not a video URL. Provide a video only if the form or organizers require it.
+The model path is opt-in with `SIGNALFLOW_ENABLE_LLM=true` and a local operator-supplied key. The server binds to loopback and accepts only five server-owned synthetic case IDs. Browser-created examples remain local and never reach a model. Without explicit opt-in, on the public static site, or on model/tool/validation failure, the app uses deterministic rules and labels that result as non-AI. Never enter real customer data or include the API key in the repository or a recording.
 
-**Team eligibility and official communications — participant action required.** The Global AI page allows an individual or a team of one to four, restricts each person to one team, and requires joining the official Discord. The project repository does not establish the registered team roster or Discord membership. Verify these directly in the HackCulture account and official Discord. [1]
+### Submission deliverables
 
-**Original work / build timing — organizer clarification recommended.** The rules say the core project should be substantially developed during the official event, which runs 9 October–29 November, while the prompt/prototype window is 1–15 November. SignalFlow’s existing core was created for a separate event before the prompt was published. Disclose the prior work, confirm eligibility and the needed level of new work with organizers in Discord, and make a visible, substantive adaptation to the selected challenge. Do not claim the existing core was first created after the prompt release. [1] [2]
+- **Working project and repository — PASS.** The public demo is live, and the source repository has setup instructions, tests, and the local agent code.
+- **Selected problem and description — PASS.** The draft records the exact broad prompt and maps its agent/tool behavior to the investigator workflow. It does not claim that AML workflows are unique.
+- **Technologies, tools, and AI-use explanation — PASS, subject to team edits.** README and submission draft describe Node.js, HTML/CSS/JavaScript, the optional OpenAI-compatible tool-calling model, deterministic public fallback, Manus AI coding assistance, and the four safe local tools. Each teammate must add any additional tools/models they used.
+- **Demo video — NOT CURRENT FOR THE NEW FEATURE.** The repository's current 68.5-second video was recorded before the tool-using agent existed and shows only deterministic UI/data behavior. If the form or organizer requires a video, record a new one that visibly demonstrates the local tool agent and labels the public/static behavior accurately. Do not enter the website link in a video field.
+- **Slides/PPT — optional unless the live form requires it.** The old deck is not in the new repository and retains Island-Tales paths. Update it before uploading; otherwise omit it.
 
-**Responsible development — prepared with limitations disclosed.** Only fictional cases are included. No customer or production data should be added. The project discloses that recommendations are non-authoritative and that the local session log is not durable or connected to a source platform. [1]
+### Participant and team duties
 
-**One submission per team — participant action required.** Coordinate one final project submission with the registered team. [1]
+- **Account eligibility — PASS in the supplied HackCulture screenshot.** The logged-in profile displayed “You're eligible.”
+- **Team size (1–4) — PARTICIPANT ACTION.** Confirm the registered roster.
+- **One team per participant — PARTICIPANT ACTION.** Confirm with every member.
+- **Official Discord — PARTICIPANT ACTION.** Join and monitor the required event Discord and seek organizer clarification there.
+- **One submission per team — PARTICIPANT ACTION.** Coordinate one final entry with the registered team.
+- **Current submission form — VERIFY AT SUBMISSION.** Recheck required fields because the form may change.
 
-## Judging alignment after challenge release
+## Test evidence
 
-The official judging dimensions are innovation, technical execution, problem and potential impact, use of AI, user experience, scalability, and potential. SignalFlow has a working interaction, source repository, validated browser-only synthetic data input/update, and an optional structured LLM endpoint. The main remaining product gaps for judging are the deterministic public AI behavior, the unreleased challenge prompt, and organizer confirmation of prior-work eligibility. After release, prioritize a working change that directly addresses the chosen statement; retain accurate AI disclosure and demonstrate actual model-backed behavior only if an approved model service is configured for the demo. [1]
+The expanded automated suite currently passes **13 of 13** dependency-free tests. It covers the HTTP/static-file allowlist, explicit AI opt-in, a multi-turn tool-call sequence through a local mock model, required tool use, the allowed tool set, fixed synthetic IDs, structured-output validation, the six-call budget, safe fallback, request size/content types, and absence of API CORS access. These tests do not make a real provider call.
 
-## Official sources
+One real-provider smoke attempt in this sandbox returned the deterministic fallback with the safe reason `provider_unavailable`. The configured default `gpt-4o-mini` was absent from this sandbox's model catalog. That does not establish whether the participant's own compatible provider supports the model. The real model-backed path is therefore **not yet verified end-to-end**. Before presenting it, configure an available tool-calling model on the intended provider and confirm that a fixed synthetic case returns a real multi-tool trace.
+
+The public Pages site and browser-local data workflows were previously smoke-tested at phone size. After the new UI ships, repeat a public-browser check for the runtime disclosure, case open, deterministic fallback, data input, safe fallback message, and responsive layout. Do not describe a deterministic result as a model-agent run.
+
+## Before final submission
+
+1. Ask HackCulture organizers in the required Discord how the October 13 Azentio-originated core and the post–1 November agent adaptation are treated under the build rule. Keep the answer.
+2. Verify the final GitHub Pages page and local model mode after the final published build. Demonstrate actual tool calls only in the explicitly configured local environment.
+3. Record a new demo video if the form requires one; the old video does not show the AI-agent addition. Update or omit the outdated deck.
+4. Confirm the team roster, one-team-per-person rule, Discord participation, and single final submission.
+5. Have the project owner decide whether to publish a software license; do not imply the public repository grants license rights.
+6. Recheck the live form, links, AI disclosure, synthetic-data warning, and exact selected prompt. Submit only after the organizer/participant-dependent items are resolved.
+
+## Official source
 
 [1]: https://hackculture.io/hackathons/ai-global-hackathon "Global AI Hackathon by Geek Room on HackCulture"
-[2]: https://hackculture.io/hackathons/azentio-ai-build-labs "Azentio.ai Build Labs on HackCulture"
