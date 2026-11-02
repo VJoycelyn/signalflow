@@ -1,0 +1,54 @@
+flowchart LR
+  subgraph Sources[Existing systems and governed sources]
+    TM[Transaction monitoring / AMLOCK alerts]
+    CUST[KYC and customer profile]
+    TX[Transaction and account data]
+    SCREEN[Screening / prior cases]
+    POLICY[Versioned AML policies and procedures]
+  end
+
+  subgraph Edge[Access and integration boundary]
+    IDP[Enterprise IdP: OIDC / SAML]
+    GW[API gateway / WAF]
+    ADAPT[AMLOCK adapter and canonical case API]
+    BUS[Event bus / work queue]
+  end
+
+  subgraph App[SignalFlow application services]
+    UI[Investigator workspace: React + TypeScript]
+    API[Case API and authorization: Spring Boot]
+    WF[Durable investigation workflow: Temporal]
+    POLICYENG[Deterministic policy and rule service]
+    RETRIEVE[Permission-aware evidence retrieval]
+    AIGW[AI model gateway and output validation]
+    MODEL[Approved private / hosted LLM]
+  end
+
+  subgraph Data[Isolated storage and observability]
+    PG[(PostgreSQL: case state and metadata)]
+    OBJ[(Encrypted object store: evidence snapshots)]
+    SEARCH[(OpenSearch: indexed permitted evidence)]
+    AUDIT[(Append-only audit ledger / WORM archive)]
+    OBS[OpenTelemetry + metrics, traces, logs]
+  end
+
+  Sources --> ADAPT --> BUS --> API
+  IDP --> GW --> UI
+  UI <--> GW
+  GW --> API
+  API --> WF
+  WF --> RETRIEVE
+  WF --> POLICYENG
+  RETRIEVE --> ADAPT
+  RETRIEVE --> PG
+  RETRIEVE --> OBJ
+  RETRIEVE --> SEARCH
+  WF --> AIGW --> MODEL
+  POLICY --> POLICYENG
+  API --> PG
+  API --> AUDIT
+  WF --> AUDIT
+  API --> OBS
+  WF --> OBS
+  ADAPT --> OBS
+  API -->|approved disposition command only| ADAPT
