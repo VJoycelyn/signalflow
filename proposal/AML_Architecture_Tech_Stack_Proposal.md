@@ -5,6 +5,8 @@
 
 **Status and scope:** This is a solution proposal, not an official Azentio design or a claim that specific AMLOCK integration APIs are available. The existing SignalFlow website is a public hackathon prototype that uses fictional records. Production interfaces, deployment constraints, controls, and data residency must be confirmed with the product owner, security team, and AML domain experts before implementation.
 
+**Current Global AI challenge slice (2 November 2026):** SignalFlow now includes an opt-in, loopback-only tool-using model agent over five fixed synthetic cases. The model can call four server-owned tools for evidence, illustrative baseline, missing context, and a sample checklist; its bounded final draft is validated and requires human disposition. This local prototype is separate from the public static GitHub Pages demo, which remains deterministic. The broader architecture below is a proposal and is not the current application stack.
+
 ## 1. Executive summary
 
 SignalFlow should be implemented as an **investigation-support layer beside the existing monitoring and case-management platform**, not as a replacement for transaction monitoring and not as an autonomous disposition engine. It ingests an alert through an approved, versioned adapter; assembles only authorized case context; evaluates deterministic policy and risk rules; and optionally uses a governed language model to summarize already-retrieved evidence into a concise, cited recommendation. The investigator reviews the evidence, corrects or supplements context, and explicitly records the disposition in the authoritative case system.

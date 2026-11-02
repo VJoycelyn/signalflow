@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#07111f" />
-  <meta name="description" content="SignalFlow — an explainable AML investigation copilot concept using synthetic demo data." />
+  <meta name="description" content="SignalFlow — an AML investigation prototype with browser-local synthetic cases, deterministic public demo behavior, and an optional bounded local AI tool agent." />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
   <title>SignalFlow · AI investigation copilot</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,18 +34,18 @@
 
     <main class="main-content">
       <header class="topbar">
-        <div><p class="eyebrow">DEMO SNAPSHOT · 31 OCT 2026 <span class="live-dot"></span> SYNTHETIC ONLY</p><h1>Good morning, Amara.</h1></div>
+        <div><p class="eyebrow">GLOBAL AI HACKATHON · SYNTHETIC ONLY <span class="live-dot"></span> DEMO</p><h1>Good morning, Amara.</h1></div>
         <div class="topbar-actions"><span class="synthetic-pill"><span></span> Synthetic demo data</span><button class="icon-button" type="button" disabled aria-label="Notifications inactive in demo" title="Notifications inactive in demo">♢</button><button class="avatar avatar-small" type="button" disabled aria-label="Profile menu inactive in demo" title="Profile menu inactive in demo">AR</button></div>
       </header>
 
       <section id="view-queue" class="view active-view" aria-labelledby="queue-heading">
-        <div class="hero-strip"><div><span class="section-kicker">CONTROL ROOM · SYNTHETIC CASES</span><h2>Resolve the signal, not the noise.</h2><p>SignalFlow connects alert evidence and context into one reviewable investigation. Demo records only; no live monitoring.</p></div><div class="hero-orbit" aria-hidden="true"><div class="orbit-core">AI</div><span class="orbit-tag tag-one">Context</span><span class="orbit-tag tag-two">Policy</span><span class="orbit-tag tag-three">Network</span></div></div>
+        <div class="hero-strip"><div><span class="section-kicker">CONTROL ROOM · SYNTHETIC CASES</span><h2>Resolve the signal, not the noise.</h2><p>SignalFlow connects alert evidence and context into one reviewable investigation. Demo records only; no live monitoring.</p></div><div class="hero-orbit" aria-hidden="true"><div class="orbit-core">AI</div><span class="orbit-tag tag-one">Signals</span><span class="orbit-tag tag-two">Context</span><span class="orbit-tag tag-three">Human review</span></div></div>
 
-        <div class="metric-grid" aria-label="Illustrative synthetic demo metrics">
-          <article class="metric-card"><div class="metric-top"><span>Sample cases</span><span class="metric-icon amber" aria-hidden="true">◈</span></div><strong id="metric-case-count">05</strong><small>Fictional queue records</small></article>
-          <article class="metric-card"><div class="metric-top"><span>AI triage coverage</span><span class="metric-icon cyan" aria-hidden="true">✦</span></div><strong>84<span class="unit">%</span></strong><small>Illustrative synthetic metric</small></article>
-          <article class="metric-card"><div class="metric-top"><span>Median review time</span><span class="metric-icon purple" aria-hidden="true">◷</span></div><strong>18<span class="unit">m</span></strong><small>Illustrative synthetic metric</small></article>
-          <article class="metric-card"><div class="metric-top"><span>Needs analyst review</span><span class="metric-icon red" aria-hidden="true">!</span></div><strong id="metric-review-count">04</strong><small>Sample statuses only · human gate</small></article>
+        <div class="metric-grid" aria-label="Synthetic demo scope and safety boundaries">
+          <article class="metric-card"><div class="metric-top"><span>Sample cases</span><span class="metric-icon amber" aria-hidden="true">◈</span></div><strong id="metric-case-count">05</strong><small>Fictional queue records only</small></article>
+          <article class="metric-card"><div class="metric-top"><span>Allowlisted agent tools</span><span class="metric-icon cyan" aria-hidden="true">✦</span></div><strong>04</strong><small>Local model mode only · fixed data</small></article>
+          <article class="metric-card"><div class="metric-top"><span>External system writes</span><span class="metric-icon purple" aria-hidden="true">◷</span></div><strong>00</strong><small>No bank or case-system connection</small></article>
+          <article class="metric-card"><div class="metric-top"><span>Needs analyst review</span><span class="metric-icon red" aria-hidden="true">!</span></div><strong id="metric-review-count">04</strong><small>Human decision gate stays active</small></article>
         </div>
 
         <div class="content-grid">
