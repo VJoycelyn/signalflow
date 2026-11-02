@@ -2,65 +2,61 @@
 
 - **Review date:** 2 November 2026
 - **Selected challenge:** Innovative Solution for AI Agents & Intelligent Systems
-- **Source:** https://github.com/VJoycelyn/signalflow
+- **Repository:** https://github.com/VJoycelyn/signalflow
 - **Public demo:** https://vjoycelyn.github.io/signalflow/
+- **Presenter deck:** [`submission/SignalFlow-Pitch-Deck.pptx`](./submission/SignalFlow-Pitch-Deck.pptx)
+- **Demo video:** [`submission/SignalFlow-Demo-Video.mp4`](./submission/SignalFlow-Demo-Video.mp4)
 
-## Current status
+## Decision
 
-SignalFlow now has a substantive, challenge-specific agent implementation in its local Node runtime. A model chooses and calls allowlisted functions over fixed synthetic cases, and the UI can show the real returned tool trace. The public GitHub Pages deployment is static and deterministic; it has no model endpoint. This distinction is disclosed in the app and the submission documents.
+**Technical package: ready against the requirements currently visible in the authenticated HackCulture submission instructions. Eligibility: hold for organizer clarification about disclosed prior work.** The repository is public and has installation/implementation/technology documentation; the seven-slide presenter deck covers the problem, solution, architecture, and working prototype; the live demo works; and a current captioned video is available. One genuine GPT-6.1 Sol run returned three real tool calls and a human-gated draft.
 
-The project is not ready for final submission until the organizer clarifies the disclosed prior-work history and the team verifies its own rules/registration actions. The current demo video predates the tool-agent feature and does not demonstrate it.
+Do **not** describe the whole product as created from scratch for the Global AI Hackathon. The SignalFlow interface/core originated for the separate Azentio.ai Build Labs event and was publicly committed on 13 October. The Global challenge prompts opened on 1 November; the bounded model-agent implementation and Global-specific materials were added after that. Ask the organizer whether the disclosed adaptation meets the build rule before pressing the final submit control. If the organizer says no, or does not clarify, do not imply eligibility.
 
-## Rule-by-rule check
+## Requirements confirmed in the authenticated submission panel
 
-### Build during the hackathon
+| Requirement shown in HackCulture | SignalFlow status | Evidence / action |
+|---|---|---|
+| Select a primary problem statement from the Theme dropdown | **Selected** | Innovative Solution for AI Agents & Intelligent Systems |
+| Public GitHub repository | **Ready** | https://github.com/VJoycelyn/signalflow |
+| Detailed README covering project, installation, implementation, and technologies | **Ready** | `README.md` documents all four, plus boundaries and AI use |
+| Pitch deck explains problem, solution, technical architecture, and working prototype | **Ready** | Seven-slide `submission/SignalFlow-Pitch-Deck.pptx`; updated to include architecture and the genuine agent-workspace screenshot |
+| Deployed app | **Not required** | HackCulture says deployment is not mandatory; a public static demo is available |
+| Live demo or demonstration video | **Optional/welcome** | Live URL and current captioned MP4 are available; attach video if the actual form provides a useful optional field |
+| Bifrost by Maxim AI, Tavily, or both | **Optional per wording** | Instructions say teams “can” use these technologies and describe how to report a combined project. SignalFlow does not claim either integration; do not mark one as used unless implemented and verified. |
 
-**PARTIAL — organizer clarification recommended.** HackCulture's page lists the overall event period as 9 October–29 November 2026 and the challenge/prototype window as 1–15 November. The first public SignalFlow source commit is dated 13 October, within the overall event dates but before prompt release. Project materials disclose that the underlying prototype originated for the separate Azentio.ai Build Labs event. The selected prompt-specific tool-agent work was added after the prompts opened. This history is not being relabelled. Ask the organizer in the required Discord whether reuse of that core plus the new adaptation meets the rule that the core project should be substantially developed during the event.
+The submission instructions were visible in the authenticated program dashboard at the “Problem Statements & Prototype Submission” phase. Official public event page: [HackCulture — Global AI Hackathon](https://hackculture.io/hackathons/ai-global-hackathon).
 
-### Original work and third-party terms
+## Build window and prior-work eligibility — **organizer clarification required**
 
-**PARTIAL.** The six-vendor review found common AML alert-investigation functionality but no evidence of code copying; it was not a comprehensive plagiarism or provenance scan and cannot certify legal originality. `THIRD_PARTY_NOTICES.md` identifies Manrope and DM Mono and their SIL Open Font License 1.1 references. There are no third-party npm runtime dependencies. The repository has no project-level `LICENSE` for SignalFlow source; the owner should choose one only if they intend to grant reuse rights. Maintain the Azentio-origin and AI-assistance disclosures.
+The overall event runs 9 October–29 November 2026; the prototype/challenge window runs 1–15 November. The first public SignalFlow source commit is dated **13 October 2026**, within the overall event dates but before the Global prompt release. The existing interface/core was created for the separate Azentio.ai Build Labs event. The bounded tool-using agent, its tests, and Global-specific materials were added after the Global prompts opened on 1 November.
 
-### AI use and responsible development
+This provenance is disclosed in the README, submission draft, deck/repository materials, and current demo video. The event rule says the core project should be substantially developed during the hackathon. The available public rule text does not resolve how a pre-prompt project from another event may be adapted. Ask the organizer in the official Discord and keep the answer. This is an eligibility question, not a technical defect.
 
-**IMPLEMENTED, WITH DEMO LIMITATION.** The local model agent can use four fixed functions: read synthetic case signals, compare an illustrative baseline, check missing context, and retrieve a sample review checklist. The orchestrator allows at most four model turns and six calls. It requires the evidence and checklist tools plus at least one other distinct tool and validates the final recommendation. It has no search or case-write tool, and the analyst retains the decision.
+## Working AI agent and responsible scope — **verified within limits**
 
-The model path is opt-in with `SIGNALFLOW_ENABLE_LLM=true` and a local operator-supplied key. The server binds to loopback and accepts only five server-owned synthetic case IDs. Browser-created examples remain local and never reach a model. Without explicit opt-in, on the public static site, or on model/tool/validation failure, the app uses deterministic rules and labels that result as non-AI. Never enter real customer data or include the API key in the repository or a recording.
+The optional local agent can choose among four fixed functions over server-owned fictional cases: read synthetic signals, compare an illustrative baseline, check missing context, and retrieve a sample analyst checklist. The server bounds execution to four model turns and six tool calls, requires an evidence path, validates structured output, and exposes no web search, bank-system, disposition, or case-write tool. The analyst retains the decision. Custom browser-entered examples never reach the agent; only five fixed synthetic case IDs are accepted. The server binds to loopback; do not expose provider credentials or use real customer data.
 
-### Submission deliverables
+Automated tests: **13/13 passing**, using a local mock provider. Separately, on 2 November 2026, a live run on synthetic case `ALT-24081` used **GPT-6.1 Sol through the current Manus-provided OpenAI-compatible gateway**, executed three real local tools, and returned a draft with `humanDecisionRequired: true`. See [`submission/LIVE_MODEL_RUN_EVIDENCE.json`](./submission/LIVE_MODEL_RUN_EVIDENCE.json) and the updated MP4. This verifies that one gateway/model setup only—not a participant-owned key, all providers, AML accuracy, or production readiness. If the team presents on a different model/provider, verify that exact configuration first.
 
-- **Working project and repository — PASS.** The public demo is live, and the source repository has setup instructions, tests, and the local agent code.
-- **Selected problem and description — PASS.** The draft records the exact broad prompt and maps its agent/tool behavior to the investigator workflow. It does not claim that AML workflows are unique.
-- **Technologies, tools, and AI-use explanation — PASS, subject to team edits.** README and submission draft describe Node.js, HTML/CSS/JavaScript, the optional OpenAI-compatible tool-calling model, deterministic public fallback, Manus AI coding assistance, and the four safe local tools. Each teammate must add any additional tools/models they used.
-- **Demo video — NOT CURRENT FOR THE NEW FEATURE.** The repository's current 68.5-second video was recorded before the tool-using agent existed and shows only deterministic UI/data behavior. If the form or organizer requires a video, record a new one that visibly demonstrates the local tool agent and labels the public/static behavior accurately. Do not enter the website link in a video field.
-- **Slides/PPT — optional unless the live form requires it.** The old deck is not in the new repository and retains Island-Tales paths. Update it before uploading; otherwise omit it.
+The public GitHub Pages site is a separate deterministic static experience; it makes no model call and labels its fallback honestly. The local model-backed agent is not hosted on that public page.
 
-### Participant and team duties
+## Other submission and participant checks
 
-- **Account eligibility — PASS in the supplied HackCulture screenshot.** The logged-in profile displayed “You're eligible.”
-- **Team size (1–4) — PARTICIPANT ACTION.** Confirm the registered roster.
-- **One team per participant — PARTICIPANT ACTION.** Confirm with every member.
-- **Official Discord — PARTICIPANT ACTION.** Join and monitor the required event Discord and seek organizer clarification there.
-- **One submission per team — PARTICIPANT ACTION.** Coordinate one final entry with the registered team.
-- **Current submission form — VERIFY AT SUBMISSION.** Recheck required fields because the form may change.
+- The account profile previously displayed “You're eligible”; confirm it remains current.
+- Confirm the registered team has **1–4 members**, each participant is on only one team, and all participants joined the required Discord.
+- Coordinate the team's single final project submission and gather each teammate's personal AI/tool disclosures.
+- The current public event page welcomes a demo video but does not make deployment mandatory. The authenticated instructions say video/live demo are welcome; neither is a technical blocker.
+- Keep fictional-data and non-production caveats. Do not claim measured impact, AML accuracy, production integrations, or unique invention.
+- The public repository currently has no project-level license; access does not grant a reuse license.
 
-## Test evidence
+## When to submit
 
-The expanded automated suite currently passes **13 of 13** dependency-free tests. It covers the HTTP/static-file allowlist, explicit AI opt-in, a multi-turn tool-call sequence through a local mock model, required tool use, the allowed tool set, fixed synthetic IDs, structured-output validation, the six-call budget, safe fallback, request size/content types, and absence of API CORS access. These tests do not make a real provider call.
+The prototype window closes **15 November 2026 at 11:59 PM India Standard Time** (1:29 PM Eastern Standard Time that day). Aim for **14 November** to leave a buffer.
 
-One real-provider smoke attempt in this sandbox returned the deterministic fallback with the safe reason `provider_unavailable`. The configured default `gpt-4o-mini` was absent from this sandbox's model catalog. That does not establish whether the participant's own compatible provider supports the model. The real model-backed path is therefore **not yet verified end-to-end**. Before presenting it, configure an available tool-calling model on the intended provider and confirm that a fixed synthetic case returns a real multi-tool trace.
+**Recommended sequence:** ask the organizer now about prior-work eligibility; preserve their reply; confirm team and personal disclosures; make any required edits to the Pending HackCulture draft; attach this deck and optionally the current demo video if the form has upload fields; re-open every URL; then submit for evaluation only after eligibility is clear and all fields are accurate. Do not claim the entire project was newly created for this hackathon.
 
-The public Pages site and browser-local data workflows were previously smoke-tested at phone size. After the new UI ships, repeat a public-browser check for the runtime disclosure, case open, deterministic fallback, data input, safe fallback message, and responsive layout. Do not describe a deterministic result as a model-agent run.
+## Sources
 
-## Before final submission
-
-1. Ask HackCulture organizers in the required Discord how the October 13 Azentio-originated core and the post–1 November agent adaptation are treated under the build rule. Keep the answer.
-2. Verify the final GitHub Pages page and local model mode after the final published build. Demonstrate actual tool calls only in the explicitly configured local environment.
-3. Record a new demo video if the form requires one; the old video does not show the AI-agent addition. Update or omit the outdated deck.
-4. Confirm the team roster, one-team-per-person rule, Discord participation, and single final submission.
-5. Have the project owner decide whether to publish a software license; do not imply the public repository grants license rights.
-6. Recheck the live form, links, AI disclosure, synthetic-data warning, and exact selected prompt. Submit only after the organizer/participant-dependent items are resolved.
-
-## Official source
-
-[1]: https://hackculture.io/hackathons/ai-global-hackathon "Global AI Hackathon by Geek Room on HackCulture"
+- [Global AI Hackathon event page](https://hackculture.io/hackathons/ai-global-hackathon)
+- Authenticated program dashboard: “Problem Statements & Prototype Submission” instructions (reviewed 2 November 2026).

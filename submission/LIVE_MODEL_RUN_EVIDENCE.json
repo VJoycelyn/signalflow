@@ -1,0 +1,17 @@
+{
+  "verification_date": "2026-11-02",
+  "model": "gpt-6.1-sol",
+  "provider_scope": "Manus-provided OpenAI-compatible model gateway in the current sandbox",
+  "case_id": "ALT-24081",
+  "synthetic_data_only": true,
+  "engine": "model-agent",
+  "tool_trace_labels": [
+    "Read synthetic case signals",
+    "Check missing context",
+    "Retrieve sample review checklist"
+  ],
+  "tool_count": 3,
+  "human_decision_required": true,
+  "result_label": "TOOL-USING AI AGENT \u00b7 DRAFT",
+  "participant_owned_provider_verified": false
+}

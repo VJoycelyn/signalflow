@@ -3,48 +3,47 @@
 - **Review date:** 2 November 2026
 - **Selected challenge:** Innovative Solution for AI Agents & Intelligent Systems
 - **Repository:** https://github.com/VJoycelyn/signalflow
+- **Public demo:** https://vjoycelyn.github.io/signalflow/
 
 ## Bottom line
 
-The selected challenge now has a substantive implementation: a bounded local model agent can choose among four allowlisted synthetic-data tools, must inspect required evidence/checklist sources, returns a constrained draft, and displays its actual tool trace. The public GitHub Pages demo is deliberately static and deterministic. The 13 automated server tests pass with a local mock provider, but a live-provider smoke attempt in this development environment fell back because its model catalog did not include the configured `gpt-4o-mini`. The actual provider/model for the final demonstration still needs an end-to-end tool-trace test.
+SignalFlow has a substantive challenge-specific agent implementation in its local Node runtime. A model selects and calls allowlisted tools over fixed fictional cases; the UI shows the actual returned trace. The 13 automated server tests pass using a local mock provider. Separately, a live run on case `ALT-24081` completed on 2 November using GPT-6.1 Sol through the current Manus-provided OpenAI-compatible gateway. It returned three server-executed tools and a human-gated draft. A captioned video records that run, and a sanitized record is in `submission/LIVE_MODEL_RUN_EVIDENCE.json`.
 
-SignalFlow may be described as an independently scoped prototype, but not as a unique AML workflow or a legally certified original. The existing UI originated for the separate Azentio.ai Build Labs event. The new agent adaptation followed the Global challenge release; the organizer should confirm whether reusing the existing core satisfies the event's build rule before the team submits.
+The authenticated HackCulture submission instructions ask for a public repository with a detailed README and say the pitch deck should cover the problem, solution, technical architecture, and working prototype. A revised seven-slide presenter deck now covers those items and links to the standalone project. Deployment is not mandatory; a live demo or video is welcome. The same instructions say teams can use Bifrost, Tavily, or both; SignalFlow does not claim either integration.
+
+**Technical package: ready to present. Eligibility: do not claim the full project was created from scratch for the Global prompt.** The original interface/core came from the separate Azentio.ai Build Labs project and predates the Global prompts. Ask the organizer whether the new agent adaptation and transparent reuse satisfy the build rule before final submission.
 
 ## Originality assessment
 
-The general AML alert-to-investigation pattern is established. NICE Actimize, SAS, Feedzai, ComplyAdvantage, Unit21, and HAWK AI each publicly describe combinations of transaction alerts, investigation or case views, evidence/context, explanations or recommendations, and analyst review.[2] [3] [4] [5] [6] [7] Some also market AI or agent functionality. That overlap is evidence of a common product category, not evidence that SignalFlow copied their code, wording, or assets.
+The general AML alert-to-investigation pattern is established. NICE Actimize, SAS, Feedzai, ComplyAdvantage, Unit21, and HAWK AI publicly describe combinations of transaction alerts, investigation or case views, evidence/context, explanations or recommendations, and analyst review.[2–7] Some also market AI or agent functionality. That overlap indicates a common product category; it is not evidence that SignalFlow copied their code, wording, or assets.
 
-The defensible project claim is narrower: SignalFlow is a synthetic-data workbench with browser-local sample editing, a deterministic public demo, and an optional loopback-only agent implementation with fixed local tools and a visible tool trace. The six-vendor comparison and supplied project materials did not reveal evidence of copying, but they were not a source-code similarity scan, legal review, or guarantee of originality. Do not call the concept “first,” “unique,” or “patentable.”
+The defensible project claim is narrower: SignalFlow is a synthetic-data workbench with browser-local sample editing, a deterministic public demo, and an optional loopback-only agent implementation with fixed local tools and a visible trace. The reviewed sources did not reveal evidence of copying, but this was not a source-code similarity scan, legal review, or guarantee of originality. Do not call the concept first, unique, or patentable.
 
-## Challenge-specific implementation
+## Requirement and implementation review
 
-The chosen broad challenge is **Innovative Solution for AI Agents & Intelligent Systems**.[1] The added local tool loop allows the model to select from four server-side functions over fixed synthetic records: read case signals, compare an illustrative demo baseline, check missing context, and retrieve a sample analyst checklist. The orchestrator limits execution to four model turns and six calls. It requires the evidence and checklist functions plus at least one other distinct tool, validates requested function names and case IDs, and accepts only an allowlisted structured recommendation. The model cannot call external search or write to a financial institution's case system. It cannot disposition or close a case. The analyst owns the decision.
-
-Editable browser records remain in that browser and are never sent to the model endpoint. The server accepts only five server-owned fixture IDs. It binds to loopback and exposes only allowlisted public assets. When a model or protocol step fails, the result is deterministic and the UI identifies that no AI tools ran. These controls make the prototype's agent behavior inspectable; they do not make it a production AML service.
-
-## Requirement check
-
-- **Working project and source — prepared.** The repository contains the static website, data-entry workflow, local Node server, agent engine, tests, setup instructions, and submission materials. The public website has previously been smoke-tested with browser-local data updates. Repeat browser QA after the final deployment.
-- **Challenge and project description — prepared.** The selected broad prompt, problem, solution, AI tools, and project limits are described in the submission draft.
-- **Use of AI — implemented, live provider unverified.** The source implements genuine model-selected function calls. The 13 automated tests use a local mock provider. One real-provider attempt in this environment returned `provider_unavailable`; its gateway did not list the configured default model name. Use a compatible model that the submitting team's chosen provider actually supports and verify a real tool trace before presenting this mode as working.
-- **Responsible development — prepared.** The app uses fictional cases and a human decision gate; no real customer data, production integration, immutable audit system, validated compliance result, or performance metric is claimed.
-- **Third-party rights — documented in part.** Manrope and DM Mono are loaded through Google Fonts and their SIL Open Font License 1.1 notices are listed in `THIRD_PARTY_NOTICES.md`.[8] [9] There are no third-party npm runtime packages. The repository has no project-level software license, so public access should not be described as a reuse license.
-- **Demo video — out of date for the agent feature.** The included video predates this tool-agent work and shows the deterministic interface/data workflow only. Replace it if the live form requires a video or if using it to claim an AI demonstration. The user-provided screenshots did not show a required marker beside the video or PPT fields, but the logged-in form should be rechecked before submission.[1]
-- **Eligibility — partially confirmed.** The supplied HackCulture screenshot displayed “You're eligible” for the account. The repository cannot verify the registered team size, one-team-per-person status, Discord membership, or coordination of the team's single final entry. The event rule allows a team of one to four and requires participants to join the official Discord.[1]
+- **Public project and README — ready.** The repository contains installation steps, implementation description, technology stack, tests, limitations, and disclosures.
+- **Pitch deck — ready.** `submission/SignalFlow-Pitch-Deck.pptx` covers the problem, solution, technical architecture, and working prototype; its links point to the separate public SignalFlow repository and demo.
+- **Working prototype — ready within stated scope.** The public site supports browser-local fictional-data CRUD; the loopback server runs the local model-agent mode only with explicit opt-in.
+- **Live model path — one configuration verified.** GPT-6.1 Sol through the current Manus-provided gateway returned three tools on `ALT-24081`. This does not verify a participant-owned provider or any other model.
+- **AI and human safety — disclosed.** Fixed synthetic-only inputs, bounded calls, strict output validation, transparent tool traces, deterministic fallback, and human-owned decisions; no real-customer data or production integration.
+- **Demo video — available, optional per the authenticated instructions.** The current MP4 shows the tool trace and separate static demo.
+- **Partner tools — not claimed.** The form says a team can use Bifrost, Tavily, or both; no integration is represented as present.
+- **Third-party fonts — documented.** Manrope and DM Mono use SIL Open Font License 1.1; no third-party npm runtime packages. The repository has no project-level software license, so public access should not be described as granting reuse rights.
 
 ## Build timing and prior work
 
-The first public SignalFlow source commit is dated 13 October 2026. The project materials state that the original UI/core prototype was created for the separate Azentio.ai Build Labs event. HackCulture lists the Global event period as 9 October–29 November and the prompt/prototype window as 1–15 November; its rules say the core project should be substantially developed during the event.[1] The new tool-using agent and Global-specific materials were developed after the prompts opened on 1 November.
+The first public SignalFlow source commit is dated **13 October 2026**. The original UI/core was developed for Azentio.ai Build Labs. The Global event started on 9 October, but the challenge prompts opened on 1 November. The tool-using agent and Global-specific materials were developed after those prompts opened.
 
-This timeline is disclosed. It does not justify saying that the entire project was created for the Global challenge. Because the earlier prototype was made for a different event and predates the selected prompt, obtain the organizer's interpretation in the required Discord and keep the response. Do not submit if the organizer says this reuse is ineligible.
+The history is disclosed. It does not justify saying the entire project was first created for the Global challenge. The event's build rule says the core project should be substantially developed during the hackathon; its public wording does not decide how this earlier other-event project may be adapted. Obtain the organizer's ruling in the required Discord and keep the response. If the organizer says the reuse is ineligible, do not submit it as eligible.
 
-## Before submission
+## Before final submission
 
-1. Configure a model actually supported by the chosen OpenAI-compatible provider, then run a built-in fictional case and confirm the UI shows a real multi-tool trace rather than the deterministic fallback.
-2. Ask the organizer in the official Discord whether the disclosed Azentio-originated core plus this post-prompt agent adaptation meets the build rule.
-3. Recheck the logged-in submission form. If video is required, replace the old deterministic-only recording with one that shows the true local agent mode. Do not use the old PowerPoint without updating its Island-Tales links.
-4. Confirm the registered team has 1–4 people, each participant is on only one team, all participants joined the Discord, and the team will make one final submission.
-5. Keep the AI/tool disclosure complete for every teammate. Preserve the synthetic-data and non-production caveats. Do not enter real customer data or expose a key in a public demo or recording.
+1. Ask the organizer whether the disclosed Azentio-originated core plus the post-prompt agent adaptation meets the build rule.
+2. Confirm the account remains eligible, team size is 1–4, every participant is on only one team, all have joined the required Discord, and the team will make one final submission.
+3. Add each teammate's personal AI/tool disclosures.
+4. Use the current presenter deck and standalone repository/demo links; attach the optional MP4 if the form offers the field.
+5. If using a different provider/model than the recorded GPT-6.1 Sol gateway run, verify that exact configuration before claiming it is active.
+6. Preserve synthetic-data and non-production caveats; never expose keys or enter real customer data.
 
 ## References
 
@@ -55,5 +54,3 @@ This timeline is disclosed. It does not justify saying that the entire project w
 [5]: https://complyadvantage.com/mesh/transaction-monitoring-software/ "ComplyAdvantage transaction monitoring"
 [6]: https://www.unit21.ai/products/aml-transaction-monitoring "Unit21 AML transaction monitoring"
 [7]: https://hawk.ai/solutions/aml/transaction-monitoring "HAWK AI transaction monitoring"
-[8]: https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt "Manrope SIL Open Font License 1.1"
-[9]: https://raw.githubusercontent.com/google/fonts/main/ofl/dmmono/OFL.txt "DM Mono SIL Open Font License 1.1"

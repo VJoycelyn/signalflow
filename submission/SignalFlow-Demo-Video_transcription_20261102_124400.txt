@@ -1,0 +1,18 @@
+[00:00.2 - 00:02.9] An AML alert is a question, not a conclusion.
+[00:02.9 - 00:10.5] SignalFlow is a synthetic data investigation prototype for the Global AI Hackathon's AI Agents and Intelligent Systems Challenge.
+[00:10.5 - 00:14.3] Every record, score, and event in this workspace is fictional.
+[00:14.3 - 00:16.1] Open the sample case.
+[00:16.1 - 00:18.0] Its score prioritizes review.
+[00:18.0 - 00:19.7] It does not establish wrongdoing.
+[00:19.7 - 00:26.1] For this verified run, the bounded agent uses GPT 6.1 Sole through the current Manus Model Gateway.
+[00:26.1 - 00:31.9] Its only tools read synthetic signals, identify missing context, and retrieve a sample review checklist.
+[00:31.9 - 00:34.7] Here is the live tool trace returned by the server.
+[00:34.7 - 00:38.3] The model drafts a next step, but an analyst owns the decision.
+[00:38.3 - 00:42.3] The agent cannot access a bank system, search the web, or change a case.
+[00:42.3 - 00:45.2] This video verifies one synthetic case run.
+[00:45.2 - 00:48.2] It does not prove AML performance or production readiness.
+[00:48.2 - 00:52.5] The public GitHub Pages site remains deterministic and makes no model call.
+[00:52.5 - 00:56.4] The agent runs locally with an explicitly configured compatible provider.
+[00:56.4 - 01:01.4] SignalFlow's original interface began in the separate Azentio AI Build Labs project.
+[01:01.4 - 01:04.8] The bounded agent adaptation was added for the Global AI Hackathon.
+[01:04.8 - 01:06.4] That history is disclosed.

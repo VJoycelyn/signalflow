@@ -124,7 +124,7 @@ async function launchAgentApp() {
     SIGNALFLOW_ENABLE_LLM: 'true',
     OPENAI_API_KEY: 'test-only-not-a-real-secret',
     OPENAI_API_BASE: `http://127.0.0.1:${mockApiPort}/v1`,
-    OPENAI_MODEL: 'gpt-4o-mini',
+    OPENAI_MODEL: 'gpt-6.1-sol',
   });
 }
 
@@ -170,7 +170,7 @@ test('enabled agent uses multiple allowlisted tools and returns a validated huma
     const status = await (await fetch(`${app.baseUrl}/api/status`)).json();
     assert.equal(status.mode, 'local-tool-agent-enabled');
     assert.equal(status.modelEnabled, true);
-    assert.equal(status.model, 'gpt-4o-mini');
+    assert.equal(status.model, 'gpt-6.1-sol');
 
     const response = await postJson(app.baseUrl, '/api/investigate', { case: { id: 'ALT-24081' } });
     assert.equal(response.status, 200);
@@ -185,7 +185,12 @@ test('enabled agent uses multiple allowlisted tools and returns a validated huma
     assert.equal(mockCalls[0].tools.length, 4);
     assert.equal(mockCalls[0].max_completion_tokens, 500);
     assert.equal(mockCalls[0].max_tokens, undefined);
+    assert.equal(mockCalls[0].temperature, undefined);
+    assert.deepEqual(mockCalls[0].reasoning, { effort: 'low' });
     assert.ok(mockCalls[0].tools.every((entry) => entry.function.strict === true));
+    assert.equal(mockCalls[2].tools, undefined);
+    assert.equal(mockCalls[2].response_format.type, 'json_schema');
+    assert.equal(mockCalls[2].response_format.json_schema.strict, true);
     assert.match(JSON.stringify(mockCalls[1].messages), /Velocity spike/);
     assert.match(JSON.stringify(mockCalls[2].messages), /DEMO-VELOCITY-V1/);
     assert.doesNotMatch(JSON.stringify(mockCalls), /Nadia Rahman|184,200|Sensitive name/);
