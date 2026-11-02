@@ -180,20 +180,45 @@ function parseFinalAnswer(content, caseData, trace) {
   };
 }
 
-async function requestCompletion({ apiBase, apiKey, model, messages, fetchImpl }) {
+async function requestCompletion({ apiBase, apiKey, model, messages, fetchImpl, finalOnly = false }) {
   const gptFamily = /^(gpt-|o\d)/i.test(model);
+  const gpt6Family = /^gpt-6(?:[.-]|$)/i.test(model);
   const tokenBudget = gptFamily ? { max_completion_tokens: 500 } : { max_tokens: 500 };
+  const modelOptions = gpt6Family
+    ? { reasoning: { effort: 'low' } }
+    : /^o\d/i.test(model) ? {} : { temperature: 0.1 };
+  const requestBody = {
+    model,
+    ...modelOptions,
+    ...tokenBudget,
+    messages,
+  };
+  if (finalOnly) {
+    requestBody.response_format = {
+      type: 'json_schema',
+      json_schema: {
+        name: 'aml_investigation_draft',
+        strict: true,
+        schema: {
+          type: 'object',
+          properties: {
+            recommendation: { type: 'string', enum: [...ALLOWED_RECOMMENDATIONS] },
+            rationale: { type: 'string' },
+            confidence: { type: 'number' },
+          },
+          required: ['recommendation', 'rationale', 'confidence'],
+          additionalProperties: false,
+        },
+      },
+    };
+  } else {
+    requestBody.tools = TOOL_DEFINITIONS;
+    requestBody.tool_choice = 'auto';
+  }
   const response = await fetchImpl(`${apiBase.replace(/\/$/, '')}/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-    body: JSON.stringify({
-      model,
-      ...(!/^o\d/i.test(model) ? { temperature: 0.1 } : {}),
-      ...tokenBudget,
-      messages,
-      tools: TOOL_DEFINITIONS,
-      tool_choice: 'auto',
-    }),
+    body: JSON.stringify(requestBody),
     signal: AbortSignal.timeout(API_TIMEOUT_MS),
   });
   if (!response.ok) return null;
@@ -230,7 +255,10 @@ export async function runSyntheticAgent(caseData, {
 
   try {
     for (let turn = 0; turn < MAX_AGENT_TURNS; turn += 1) {
-      const message = await requestCompletion({ apiBase, apiKey, model, messages, fetchImpl });
+      const toolsComplete = seenTools.has('read_case_signals')
+        && seenTools.has('get_review_checklist')
+        && seenTools.size >= 3;
+      const message = await requestCompletion({ apiBase, apiKey, model, messages, fetchImpl, finalOnly: toolsComplete });
       if (!message) return fallback('provider_unavailable');
 
       if (Array.isArray(message.tool_calls) && message.tool_calls.length > 0) {
@@ -263,7 +291,7 @@ export async function runSyntheticAgent(caseData, {
         continue;
       }
 
-      if (!seenTools.has('read_case_signals') || !seenTools.has('get_review_checklist') || seenTools.size < 3) return fallback('required_tools_missing');
+      if (!toolsComplete) return fallback('required_tools_missing');
       return parseFinalAnswer(message.content, caseData, trace) || fallback('invalid_final_response');
     }
   } catch {

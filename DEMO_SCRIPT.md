@@ -2,7 +2,7 @@
 
 **Selected challenge:** Innovative Solution for AI Agents & Intelligent Systems.
 
-**Important:** The actual tool-using model path is local-only. For a live agent demonstration, start the Node server with `SIGNALFLOW_ENABLE_LLM=true` and an approved model key, then verify the workspace badge says **LOCAL MODEL MODE ENABLED** and the run returns an actual tool trace. The badge confirms configuration, not provider connectivity. Never put the key on screen or in a recorded terminal. The public GitHub Pages site is a separate deterministic demo. Use only the built-in fictional cases.
+**Important:** The actual tool-using model path is local-only. One real run on fictional case `ALT-24081` was verified on 2 November 2026 with GPT-6.1 Sol via the current Manus-provided OpenAI-compatible gateway; the new captioned video records its three actual local tool calls. A different provider/key still needs its own live run. For a live demonstration, start the Node server with `SIGNALFLOW_ENABLE_LLM=true` and an approved key, verify the **LOCAL MODEL MODE ENABLED** badge, and confirm an actual tool trace appears. The badge alone confirms configuration, not connectivity. Never put the key on screen or in a recorded terminal. The public GitHub Pages site is a separate deterministic demo. Use only built-in fictional cases.
 
 ## 0:00–0:25 — Frame the challenge and honest project history
 
@@ -52,3 +52,5 @@ Open **Demo data**. Add a fictional alias such as `Sample Merchant 07`. Show tha
 **Are custom examples sent to the model?** No. Custom entries stay in browser localStorage. The endpoint accepts only one of five server-owned fictional case IDs.
 
 **Was the project built from scratch for this Global prompt?** No. The prior SignalFlow UI originated for the separate Azentio.ai Build Labs project and was first publicly committed on 13 October 2026. This Global challenge adaptation adds the bounded tool-using agent after the prompts opened. That history is disclosed; the team is asking the organizer to clarify how the rule applies.
+
+**Where is the current recorded demo?** [`submission/SignalFlow-Demo-Video.mp4`](./submission/SignalFlow-Demo-Video.mp4). It demonstrates one verified model/gateway configuration and the separate deterministic public site.

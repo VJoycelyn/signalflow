@@ -3,3 +3,5 @@ node_modules/
 .env.*
 !.env.example
 .DS_Store
+# Raw screen-capture intermediate; regenerate with submission/record_verified_agent_demo.py
+submission/SignalFlow-Demo-Video-source.webm
